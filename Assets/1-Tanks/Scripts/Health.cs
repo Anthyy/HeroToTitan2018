@@ -17,7 +17,7 @@ namespace Tanks
         public GameObject healthSliderPrefab;
         public Vector3 offset = new Vector2(0, 1f);
 
-        [HideInInspector] public Vector3 lastHitpoint; // The opposite of [SerializeField]. You want to hide it but still want to be able to reference it
+        [HideInInspector] public Vector3 lastHitPoint; // The opposite of [SerializeField]. You want to hide it but still want to be able to reference it
 
 
         private float currentHealth = 100f;
@@ -76,7 +76,7 @@ namespace Tanks
 
         public void TakeDamage(float damage, Vector2 hitFrom)
         {
-            lastHitpoint = hitFrom; // Record last hit position
+            lastHitPoint = hitFrom; // Record last hit position
             currentHealth -= damage; // Reducing health with damage
 
             // If health is depleted
@@ -84,7 +84,13 @@ namespace Tanks
             {
                 // Ya dead
                 Dead();
-            }
+            }          
+        }
+
+        // Test Function
+        public void TestDie()
+        {
+            TakeDamage(10000000f, transform.position);
         }
         #endregion
     }

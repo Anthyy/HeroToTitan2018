@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4591805868134688}
   - component: {fileID: 198620594113211088}
   - component: {fileID: 199895583680674540}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Thrust (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39,7 +39,8 @@ GameObject:
   - component: {fileID: 212440071653759368}
   - component: {fileID: 50594774033677998}
   - component: {fileID: 58073327607462732}
-  m_Layer: 0
+  - component: {fileID: 114368609389838602}
+  m_Layer: 9
   m_Name: tank_bullet4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,7 +93,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!58 &58073327607462732
 CircleCollider2D:
   m_ObjectHideFlags: 1
@@ -108,6 +109,17 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.375
+--- !u!114 &114368609389838602
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1622671551826252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 140cad90620f03348877821aaa6c6571, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!198 &198620594113211088
 ParticleSystem:
   m_ObjectHideFlags: 1
