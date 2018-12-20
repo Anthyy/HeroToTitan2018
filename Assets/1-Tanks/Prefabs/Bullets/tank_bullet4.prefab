@@ -103,7 +103,7 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -120,6 +120,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 140cad90620f03348877821aaa6c6571, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 25
+  explosionRadius: 2
+  explosionPrefab: {fileID: 0}
 --- !u!198 &198620594113211088
 ParticleSystem:
   m_ObjectHideFlags: 1

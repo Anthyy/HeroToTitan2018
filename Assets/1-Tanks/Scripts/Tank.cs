@@ -9,7 +9,7 @@ namespace Tanks
     public class Tank : MonoBehaviour
     {
         public float speed = 20f; // Travel distance over time
-        public float fuelDuration = 2f; // Time allowed for fuelment
+        public float fuelDuration = 2f; // Time allowed for movement
         [Header("Bullets")]
         public float bulletSpeed = 10f; // Speed to send bullet traveling
         public GameObject bulletPrefab; // Original copy of bullet
@@ -32,6 +32,21 @@ namespace Tanks
         private Slider fuelSlider; // Reference to newly spawned slider (UI)
         private bool isPlaying = false; // Is this tank currently playing? (the game is turn-based, like Worms)
 
+        public bool IsPlaying // This is a C# Property. A set of instructions you run when you set values
+        {
+            get { return isPlaying; }
+            set
+            {
+                isPlaying = value;
+                // If the bool 'IsPlaying' gets set to true
+                if (isPlaying)
+                {
+                    // Reset the tank's values
+                    Reset();
+                }
+            }
+        }
+
         #region Unity Functions
         // Use this for initialization
         void Start()
@@ -46,16 +61,22 @@ namespace Tanks
         void Update()
         {
             // Update UI's position
-            UpdateUI();
-
-            // Handle movement for the Tank
-            Move();
-            RotateGunToMouse();
-            // If we press fire button
-            if (Input.GetButtonDown("Fire1"))
+            UpdateUI(); // You want the UI to update all the time, whether or not the player is active. That's why this goes outside the if statement
+            // if this tank is isPlaying
+            if (isPlaying)
             {
-                // Shoot bullet out of gun
-                Shoot();
+
+                // Handle movement for the Tank
+                Move();
+                RotateGunToMouse();
+                // If we press fire button
+                if (Input.GetButtonDown("Fire1"))
+                {
+                    // Shoot bullet out of gun
+                    Shoot();
+                    // No longer playing
+                    IsPlaying = false;
+                }
             }
         }
 
@@ -67,11 +88,19 @@ namespace Tanks
                 // Remove the fuel slider UI
                 Destroy(fuelSlider.gameObject);
             }
+
+            // If GameManager exists
+            if (GameManager.Instance)
+            {
+                // Tell the GameManager that it has been destroyed
+                GameManager.Instance.RemoveTank(this);
+            }          
         }
 
         private void Reset()
         {
-            
+            // Reset the fuel
+            fuelTimer = fuelDuration;
         }
         #endregion
 
@@ -97,12 +126,12 @@ namespace Tanks
         private void Move()
         {
             // fuel timer hasn't reached zero yet?
-            if(fuelTimer > 0f) 
+            if (fuelTimer > 0f)
             {
                 // Get horizontal movement i.e, 'W' and 'D' keys
                 float inputH = Input.GetAxis("Horizontal");
                 // If the player is pressing one of those keys
-                if(inputH != 0)
+                if (inputH != 0)
                 {
                     // Count down the timer
                     fuelTimer -= Time.deltaTime;
@@ -142,7 +171,7 @@ namespace Tanks
                 // Detach from parent
                 part.transform.SetParent(null);
                 // Check if it has a Rigidbody2D
-                if(part.transform.GetComponent<Rigidbody2D>() == null) // So if it doesn't have a Rigidbody2D...
+                if (part.transform.GetComponent<Rigidbody2D>() == null) // So if it doesn't have a Rigidbody2D...
                 {
                     // Add a rigidbody2D
                     Rigidbody2D partRigid = part.gameObject.AddComponent<Rigidbody2D>();
@@ -150,16 +179,16 @@ namespace Tanks
                     Vector3 force = (part.transform.position - health.lastHitPoint).normalized;
                     // Add force in that direction using explosion force
                     partRigid.AddForce(force * explosionForce, ForceMode2D.Impulse);
-                } 
+                }
                 // Check if it doesn't have a Collider2D
-                if(part.transform.GetComponent<Collider2D>() == null)
+                if (part.transform.GetComponent<Collider2D>() == null)
                 {
                     // Add a PolygonCollider2D
                     part.gameObject.AddComponent<PolygonCollider2D>();
                 }
             }
         }
-        public void Died() 
+        public void Died()
         {
             Explode();
 
