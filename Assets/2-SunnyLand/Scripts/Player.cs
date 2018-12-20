@@ -53,10 +53,17 @@ namespace SunnyLand
             if(controller.isGrounded && Input.GetButtonDown("Jump")) // Jump = Space
             {
                 velocity.y = Mathf.Sqrt(2f * jumpHeight * -gravity);
-            }
+            }           
 
             // Apply gravity
             velocity.y += gravity * Time.deltaTime; // Over time, gradually push the player down with gravity
+
+            // One-way collision (think Mario Bros. for some of the blocks)
+            if (controller.isGrounded && inputV < 0)
+            {
+                velocity.y *= 3f;
+                controller.ignoreOneWayPlatformsThisFrame = true;
+            }
 
             // Apply velocity to controller
             controller.Move(velocity * Time.deltaTime); // Moves the character controller
